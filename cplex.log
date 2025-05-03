@@ -1,0 +1,48 @@
+
+Log started (V20.1.0.0) Fri May  2 14:03:36 2025
+
+
+Selected objective sense:  MINIMIZE
+Selected objective  name:  COST
+Selected RHS        name:  RHS1
+
+Problem 'SIMPLE.QPS' read.
+Read time = 0.01 sec. (0.00 ticks)
+
+Problem written to file 'teste.lp'.
+
+Log started (V20.1.0.0) Fri May  2 14:04:22 2025
+
+
+Selected objective sense:  MINIMIZE
+Selected objective  name:  COST
+Selected RHS        name:  B
+
+Problem 'files/afiro.mps' read.
+Read time = 0.00 sec. (0.01 ticks)
+
+Problem written to file 'afiro.lp'.
+
+Log started (V20.1.0.0) Fri May  2 14:09:07 2025
+
+
+Selected objective sense:  MINIMIZE
+Selected objective  name:  COST
+Selected RHS        name:  RHS1
+
+Problem 'SIMPLE.QPS' read.
+Read time = 0.00 sec. (0.00 ticks)
+
+Problem written to file 'teste.lp'.
+
+Log started (V20.1.0.0) Fri May  2 14:59:59 2025
+
+
+Selected objective sense:  MINIMIZE
+Selected objective  name:  COST
+Selected RHS        name:  RHS1
+
+Problem 'SIMPLE.QPS' read.
+Read time = 0.01 sec. (0.00 ticks)
+
+Problem written to file 'teste.lp'.

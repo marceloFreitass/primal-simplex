@@ -1,0 +1,10 @@
+\ENCODING=ISO-8859-1
+\Problem name: SIMPLE.QPS
+
+Minimize
+ COST: - 19 XONE - 13 XTWO - 12 XTRH - 17 XFOU
+Subject To
+ LIM1: 3 XONE + 2 XTWO + XTRH + 2 XFOU <= 225
+ LIM2: XONE + XTWO + XTRH + XFOU <= 117
+ LIM3: 4 XONE + 3 XTWO + 3 XTRH + 4 XFOU <= 420
+End
