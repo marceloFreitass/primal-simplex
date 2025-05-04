@@ -2,3 +2,4 @@ obj/
 .vscode/
 solve
 *.lp
+*.log
