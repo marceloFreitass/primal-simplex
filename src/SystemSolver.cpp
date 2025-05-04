@@ -10,9 +10,9 @@ SystemSolver::SystemSolver(const std::vector<int>& basics_variables, const Eigen
     {
         B0.col(i) = A.col(basics_variables[i]);
     }
-    std::cout << "B: \n";
+    // std::cout << "B: \n";
 
-    std::cout << B0 << std::endl;
+    // std::cout << B0 << std::endl;
     std::cout << "Tamanho de E: " << E.size() << std::endl;
     //DECOMPOSICAO LU DE B0
     null = (double *)NULL;
@@ -21,40 +21,36 @@ SystemSolver::SystemSolver(const std::vector<int>& basics_variables, const Eigen
     (void)umfpack_di_numeric(B0.outerIndexPtr(), B0.innerIndexPtr(), B0.valuePtr(), Symbolic, &Numeric, null, null);
 }
 
+VectorXd SystemSolver::solve_initial(const VectorXd& RHS)
+{
+    int m = RHS.size();
+    VectorXd x_b = VectorXd::Zero(m);
+    
+    (void)umfpack_di_solve(UMFPACK_A, B0.outerIndexPtr(), B0.innerIndexPtr(), B0.valuePtr(), x_b.data(), RHS.data(), Numeric, null, null);
+    
+    return x_b;
+}
+
 VectorXd SystemSolver::solve_price(const VectorXd& c_b)
 {
     VectorXd y = c_b;
+    std::cout << "C_b: " << c_b.transpose() << std::endl;
     int k = E.size();
     int m = c_b.size();
-    //TODO: if se 0
-    //OLD: errado (transposto é diferente)
-    // for(int i = k - 1; i >= 0; i--)
-    // {
-
-    //     int p = E[i].first;
-    //     y(p) /= E[i].second(p);
-    //     for(int j = 0; i < m; i++)
-    //     {
-    //         if(j == p)
-    //         {
-    //             continue;
-    //         }
-    //         y(i) -= y(p) * E[i].second(j);
-    //     }
-    // }
-
+    //TODO : CASO EM QUE É 0
     for(int i = k - 1; i >= 0; i--)
     {
         int p = E[i].first;
-        y(p) /= E[i].second(p);
         for(int j = 0; j < p; j++)
         {
-            y(p) -= y(j)/E[i].second(j);
+            y(p) -= (y(j) * E[i].second(j));
         }
-        for(int j = p; p < m; j++)
+        for(int j = p + 1; j < m; j++)
         {
-            y(p) -= y(j)/E[i].second(j);
+            y(p) -= (y(j) * E[i].second(j));
+
         }
+        y(p) /= E[i].second(p);
     }
     VectorXd result = VectorXd::Zero(m);
     (void)umfpack_di_solve(UMFPACK_At, B0.outerIndexPtr(), B0.innerIndexPtr(), B0.valuePtr(), result.data(), y.data(), Numeric, null, null);
@@ -66,20 +62,18 @@ VectorXd SystemSolver::solve_direction(const VectorXd& a)
     int m = a.size();
     VectorXd d = VectorXd::Zero(m);
     (void)umfpack_di_solve(UMFPACK_A, B0.outerIndexPtr(), B0.innerIndexPtr(), B0.valuePtr(), d.data(), a.data(), Numeric, null, null);
-    std::cout << d << std::endl;
-
 
     int k = E.size();
-    // int m = a.size().
     for(int i = 0; i < k; i++)
     {
         int p = E[i].first;
         d(p) /= E[i].second(p);
+        // std::cout << d(p) << std::endl;
         for(int j = 0; j < p; j++)
         {
             d(j) -= d(p) * E[i].second(j); 
         }
-        for(int j = p; j < m; j++)
+        for(int j = p + 1; j < m; j++)
         {
             d(j) -= d(p) * E[i].second(j); 
         }

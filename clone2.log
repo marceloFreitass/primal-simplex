@@ -1,0 +1,155 @@
+
+Log for 'd6cube.lp' Clone_2 (V20.1.0.0) Sat May  3 20:30:00 2025
+
+Tried aggregator 1 time.
+LP Presolve eliminated 12 rows and 741 columns.
+Aggregator did 1 substitutions.
+Reduced LP has 402 rows, 5442 columns, and 34230 nonzeros.
+Presolve time = 0.02 sec. (10.96 ticks)
+
+Iteration log . . .
+Iteration:     1    Scaled infeas =          2585.897510
+Iteration:    68    Scaled infeas =           269.079349
+Iteration:   132    Scaled infeas =           162.058779
+Iteration:   194    Scaled infeas =            96.915355
+Iteration:   256    Scaled infeas =            55.758744
+Iteration:   322    Scaled infeas =            42.553238
+Iteration:   391    Scaled infeas =            29.971904
+Iteration:   453    Scaled infeas =            23.836475
+Iteration:   516    Scaled infeas =            19.063040
+Iteration:   584    Scaled infeas =            14.196387
+Iteration:   662    Scaled infeas =            11.782326
+Iteration:   727    Scaled infeas =             9.598864
+Iteration:   796    Scaled infeas =             7.430488
+Iteration:   868    Scaled infeas =             5.652560
+Iteration:   938    Scaled infeas =             4.519921
+Iteration:  1018    Scaled infeas =             4.152229
+
+Dual simplex solved model.
+
+
+Log for 'files/d6cube.mps' Clone_2 (V20.1.0.0) Sat May  3 20:30:25 2025
+
+Tried aggregator 1 time.
+LP Presolve eliminated 12 rows and 741 columns.
+Aggregator did 1 substitutions.
+Reduced LP has 402 rows, 5442 columns, and 34230 nonzeros.
+Presolve time = 0.02 sec. (10.89 ticks)
+
+Iteration log . . .
+Iteration:     1    Scaled infeas =          2585.897510
+Iteration:    68    Scaled infeas =           269.079349
+Iteration:   132    Scaled infeas =           162.058779
+Iteration:   194    Scaled infeas =            96.915355
+Iteration:   256    Scaled infeas =            55.758744
+Iteration:   322    Scaled infeas =            42.553238
+Iteration:   391    Scaled infeas =            29.971904
+Iteration:   453    Scaled infeas =            23.836475
+Iteration:   516    Scaled infeas =            19.063040
+Iteration:   584    Scaled infeas =            14.196387
+Iteration:   662    Scaled infeas =            11.782326
+Iteration:   727    Scaled infeas =             9.598864
+Iteration:   796    Scaled infeas =             7.430488
+Iteration:   868    Scaled infeas =             5.652560
+Iteration:   938    Scaled infeas =             4.519921
+Iteration:  1018    Scaled infeas =             4.152229
+Iteration:  1100    Scaled infeas =             3.148178
+
+Dual simplex solved model.
+
+
+Log for 'files/d6cube.mps' Clone_2 (V20.1.0.0) Sat May  3 20:48:36 2025
+
+Tried aggregator 1 time.
+LP Presolve eliminated 12 rows and 741 columns.
+Aggregator did 1 substitutions.
+Reduced LP has 402 rows, 5442 columns, and 34230 nonzeros.
+Presolve time = 0.02 sec. (10.89 ticks)
+
+Iteration log . . .
+Iteration:     1    Scaled infeas =          2585.897510
+Iteration:    68    Scaled infeas =           269.079349
+Iteration:   132    Scaled infeas =           162.058779
+Iteration:   194    Scaled infeas =            96.915355
+Iteration:   256    Scaled infeas =            55.758744
+Iteration:   322    Scaled infeas =            42.553238
+Iteration:   391    Scaled infeas =            29.971904
+Iteration:   453    Scaled infeas =            23.836475
+Iteration:   516    Scaled infeas =            19.063040
+Iteration:   584    Scaled infeas =            14.196387
+Iteration:   662    Scaled infeas =            11.782326
+Iteration:   727    Scaled infeas =             9.598864
+Iteration:   796    Scaled infeas =             7.430488
+Iteration:   868    Scaled infeas =             5.652560
+Iteration:   938    Scaled infeas =             4.519921
+
+Dual simplex solved model.
+
+
+Log for 'files/d6cube.mps' Clone_2 (V20.1.0.0) Sat May  3 20:50:06 2025
+
+Tried aggregator 1 time.
+LP Presolve eliminated 12 rows and 741 columns.
+Aggregator did 1 substitutions.
+Reduced LP has 402 rows, 5442 columns, and 34230 nonzeros.
+Presolve time = 0.02 sec. (10.89 ticks)
+
+Iteration log . . .
+Iteration:     1    Scaled infeas =          2585.897510
+Iteration:    68    Scaled infeas =           269.079349
+Iteration:   132    Scaled infeas =           162.058779
+Iteration:   194    Scaled infeas =            96.915355
+Iteration:   256    Scaled infeas =            55.758744
+Iteration:   322    Scaled infeas =            42.553238
+Iteration:   391    Scaled infeas =            29.971904
+Iteration:   453    Scaled infeas =            23.836475
+Iteration:   516    Scaled infeas =            19.063040
+Iteration:   584    Scaled infeas =            14.196387
+Iteration:   662    Scaled infeas =            11.782326
+Iteration:   727    Scaled infeas =             9.598864
+Iteration:   796    Scaled infeas =             7.430488
+Iteration:   868    Scaled infeas =             5.652560
+
+Dual simplex solved model.
+
+
+Log for 'files/d6cube.mps' Clone_2 (V20.1.0.0) Sat May  3 21:36:01 2025
+
+Tried aggregator 1 time.
+LP Presolve eliminated 12 rows and 741 columns.
+Aggregator did 1 substitutions.
+Reduced LP has 402 rows, 5442 columns, and 34230 nonzeros.
+Presolve time = 0.01 sec. (10.89 ticks)
+
+Iteration log . . .
+Iteration:     1    Scaled infeas =          2585.897510
+Iteration:    68    Scaled infeas =           269.079349
+Iteration:   132    Scaled infeas =           162.058779
+Iteration:   194    Scaled infeas =            96.915355
+Iteration:   256    Scaled infeas =            55.758744
+Iteration:   322    Scaled infeas =            42.553238
+Iteration:   391    Scaled infeas =            29.971904
+Iteration:   453    Scaled infeas =            23.836475
+Iteration:   516    Scaled infeas =            19.063040
+Iteration:   584    Scaled infeas =            14.196387
+Iteration:   662    Scaled infeas =            11.782326
+Iteration:   727    Scaled infeas =             9.598864
+Iteration:   796    Scaled infeas =             7.430488
+Iteration:   868    Scaled infeas =             5.652560
+Iteration:   938    Scaled infeas =             4.519921
+Iteration:  1018    Scaled infeas =             4.152229
+
+Dual simplex solved model.
+
+
+Log for 'files/d6cube.mps' Clone_2 (V20.1.0.0) Sat May  3 21:48:17 2025
+
+
+Dual simplex solved model.
+
+
+Log for 'files/d6cube.mps' Clone_2 (V20.1.0.0) Sat May  3 21:51:33 2025
+
+
+Dual simplex solved model.
+
