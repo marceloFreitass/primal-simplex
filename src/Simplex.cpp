@@ -47,98 +47,74 @@ Simplex::Simplex(const MatrixXd& A, const VectorXd& lb, const VectorXd& ub, cons
     // std::cout << c_b << std::endl;
 }
 
-double Simplex::check_initial_infeasible(const VectorXd& init_x_b, const VectorXd& init_x_n)
+double Simplex::check_infeasible(const VectorXd& lb_, const VectorXd& ub_)
 {
-    
-    for(int i = 0; i < m; i++)
-    {
-        x(basics[i]) = init_x_b(i);
-    }
-    for(int i = 0; i < n - m; i++)
-    {
-        x(non_basics[i]) = init_x_n(i);
-    }
-    //FAZENDO COM QUE C_b seja -1 ou 1 e C_n = 0 (inicializado)
-    //TODO: REGULARIZAR DEPOIS
-    double inf = std::numeric_limits<double>::infinity();
     double total_inf = 0;
+    double inf = std::numeric_limits<double>::infinity();
     for(int i = 0; i < m; i++)
     {
     
-        if(lb(basics[i]) - x(basics[i]) > EPSILON_1)
+        if(lb_(basics[i]) - x(basics[i]) > EPSILON_1)
         {
-            std::cout << "VAR: " << basics[i] << std::endl;
-            std::cout << "VIO L: " << lb(basics[i]) - x(basics[i]) << std::endl;
-            std::cout << "LB: " <<  lb(basics[i]) << std::endl;
-            std::cout << "X: " << x(basics[i]) << std::endl;
+            // std::cout << "VAR: " << basics[i] << std::endl;
+            // std::cout << "VIO L: " << lb_(basics[i]) - x(basics[i]) << std::endl;
+            // std::cout << "LB: " <<  lb_(basics[i]) << std::endl;
+            // std::cout << "X: " << x(basics[i]) << std::endl;
             c_b(i) = 1;
             c(basics[i]) = 1;
             total_inf += x(basics[i]);
             lb(basics[i]) = -inf;
-            violate_bound[basics[i]] = -1;
+            ub(basics[i]) = lb_(basics[i]);
+            // std::cout << "VAR(LB): " << basics[i] << std::endl;
+
+            // violate_bound[basics[i]] = -1;
         }
-        else if(x(basics[i]) - ub(basics[i]) > EPSILON_1)
+        else if(x(basics[i]) - ub_(basics[i]) > EPSILON_1)
         {
-            std::cout << "VAR: " << basics[i] << std::endl;
-            std::cout << "VIO U: " << x(basics[i]) - ub(basics[i]) << std::endl;
-            std::cout << "UB: " <<  ub(basics[i]) << std::endl;
-            std::cout << "X: " << x(basics[i]) << std::endl;
+            // std::cout << "VAR: " << basics[i] << std::endl;
+            // std::cout << "VIO U: " << x(basics[i]) - ub_(basics[i]) << std::endl;
+            // std::cout << "UB: " <<  ub_(basics[i]) << std::endl;
+            // std::cout << "X: " << x(basics[i]) << std::endl;
             c_b(i) = -1;
             c(basics[i]) = -1;
             total_inf -= x(basics[i]);
             ub(basics[i]) = inf;
-            violate_bound[basics[i]] = 1;
+            lb(basics[i]) = ub_(basics[i]);
+            // std::cout << "VAR(UB): " << basics[i] << std::endl;
+
+            // violate_bound[basics[i]] = 1;
         }
         else
         {
             c_b(i) = 0;
+            c(basics[i]) = 0;
+            ub(basics[i]) = ub_(basics[i]);
+            lb(basics[i]) = lb_(basics[i]);
         }
     }
     
     
-    std::cout << "INF: " << total_inf << std::endl;
+    // std::cout << "INF: " << total_inf << std::endl;
     return total_inf;
-
-
-
-    
 }
 
 std::pair<int,double> Simplex::entering_variable(const VectorXd& y)
 {
     int entering_variable = n;
-    std::cout << "N: " << entering_variable << std::endl;
+    // std::cout << "N: " << entering_variable << std::endl;
     double var_reduced_cost = 0;
-    std::cout << "Duals: \n" << y.transpose() << std::endl;
+    // std::cout << "Duals: \n" << y.transpose() << std::endl;
+    // std::cout << "duais: " << y.transpose() << std::endl;
+
     for(size_t i = 0; i < non_basics.size(); i++)
     {   
         int var = non_basics[i];
         double reduced_cost = c(var) - y.transpose()  * A.col(var);
+        // std::cout << "RC: " << reduced_cost << std::endl;
+        // std::cout << "C: " << c(var) << std::endl;
+        // std::cout << "Col: " << A.col(var).transpose() << std::endl;
         double test = 0;
         VectorXd col = A.col(var);
-        // std::cout << "Col: " << col.transpose() << std::endl;
-        // for(int j = 0; j < y.size(); j++)
-        // {
-        //     test += y(j) * col(j);
-        //     if(y(j) * col(j) > EPSILON_1)
-        //     {
-        //         std::cout << "J: " << j << std::endl;
-        //         std::cout << "Teste: " << test << std::endl;
-        //         getchar();
-
-        //     }
-        // }
-
-        // std::cout << "RC: " << reduced_cost << std::endl;
-        // getchar();
-        // std::cout << "COLUNA: \n";
-        // std::cout << A.col(var) << std::endl;
-        
-        if(reduced_cost > EPSILON_1)
-        {
-            // std::cout << "A!" << std::endl;
-            // getchar();
-        }
         if(reduced_cost > EPSILON_1 && ub(var) - x(var) > EPSILON_1)  //custo reduzido positivo e pode aumentar
         {
             if(var < entering_variable)
@@ -158,8 +134,8 @@ std::pair<int,double> Simplex::entering_variable(const VectorXd& y)
     }
 
 
-    std::cout << "VAI ENTRAR: " << entering_variable << std::endl;
-    std::cout << "CUSTO REDUZIDO: " << var_reduced_cost << std::endl;
+    // std::cout << "VAI ENTRAR: " << entering_variable << std::endl;
+    // std::cout << "CUSTO REDUZIDO: " << var_reduced_cost << std::endl;
     return {entering_variable, var_reduced_cost};
     
 }
@@ -171,6 +147,7 @@ std::tuple<int, bool, double> Simplex::leaving_variable(const VectorXd& d, const
     // std::cout << "ENTROU: " << leaving_variable << std::endl;
     double t = std::numeric_limits<double>::infinity();
     int signal_t;
+    // std::cout << "vetor d: " << d.transpose() << std::endl;
     if(entering_variable.second < -EPSILON_1)
     {
         signal_t = 1;
@@ -184,18 +161,12 @@ std::tuple<int, bool, double> Simplex::leaving_variable(const VectorXd& d, const
     for(int i = 0; i < m; i++)
     {
         int var = basics[i];
-        // if(var == 6593)
-        // {
-        //     std::cout << "AQQQQQQQQQ" << std::endl;
-        //     std::cout << "INCREMENTO: " << signal_t * t * d(i) << std::endl;
-        //     std::cout << "T: " << t << std::endl;
-        //     std::cout << "D: " << d(i) << std::endl;
-        // }
         double bound = -1; //checar se pode dar ruim
         if(abs(d(i)) <= EPSILON_1) // d == 0
         {
             continue;
         }
+
         if(signal_t * d(i) < -EPSILON_1) // incremento negativo
         {
             // std::cout << "CASO 1" << std::endl;s
@@ -207,6 +178,17 @@ std::tuple<int, bool, double> Simplex::leaving_variable(const VectorXd& d, const
             // std::cout << "CASO 2: " << std::endl;
             bound = (ub(var) - x(var))/abs(d(i));
         }
+
+        if(bound <= EPSILON_1)
+        {
+            bound = 0.0;
+        }
+        // std::cout << "VAR: " << basics[i] << std::endl;
+        // std::cout << "Di: " << abs(d(i)) << std::endl;
+        // std::cout << "bound: " << bound << std::endl;
+        // std::cout << "LB: " << lb(var) << std::endl;
+        // std::cout << "UB: " << ub(var) << std::endl;
+        // std::cout << "VAL: " << x(var) << std::endl;
         if(t - bound > EPSILON_1) //bound menor;
         {
             t = bound;
@@ -223,22 +205,15 @@ std::tuple<int, bool, double> Simplex::leaving_variable(const VectorXd& d, const
     }
     //testar variavel nao basica (parametro)
 
-
-    if(!basic) //a variavel nao basica so trouca de bound
+    if(t - (ub(leaving_variable) - lb(leaving_variable)) > EPSILON_1)
     {
-        if(signal_t == 1) //xj(t) = xj - t
-        {
-            t = x(leaving_variable) - lb(leaving_variable);
-        }
-        else //xj(t) = xj + t
-        {
-            t = ub(leaving_variable) - x(leaving_variable);
-        }    
+        t = ub(leaving_variable) - lb(leaving_variable);
+        basic = false;
     }
 
-    std::cout << "T: " << t << std::endl;
-    std::cout << "VAI SAIR: " << leaving_variable << std::endl;
-    std::cout << "BASICA: " << basic << std::endl;
+    // std::cout << "T: " << t << std::endl;
+    // std::cout << "VAI SAIR: " << leaving_variable << std::endl;
+    // std::cout << "BASICA: " << basic << std::endl;
 
     //sinal de t na perspectiva das variaves basicas
     //para nao basicas: -signal_t

@@ -19,24 +19,6 @@ inline void update_basis_info(Simplex& simplex, const VectorXd& d, const int ent
     std::swap(simplex.basics_idx[leaving_variable], simplex.basics_idx[entering_variable]);
     std::swap(simplex.non_basics_idx[leaving_variable], simplex.non_basics_idx[entering_variable]);
 }
-//TODO: tirar isso
-inline void update_first_phase(Simplex& simplex, const VectorXd& d, const int entering_variable, 
-    const int leaving_variable)
-{
-    std::cout << "CHAMOU" << std::endl;
-    std::cout << "ENTER: " << entering_variable << std::endl;
-    std::cout << "LEAVE: " << leaving_variable << std::endl;
-    // std::cout << "C: " << simplex.c_b(simplex.basics_idx[leaving_variable]) << std::endl;
-    simplex.c_b(simplex.basics_idx[leaving_variable]) = 0; //variavel ficou no bound
-    simplex.c(leaving_variable) = 0; //TODO: Usar a funcao update_basis_info (mesma coisa)
-    std::cout << "C_b: " << simplex.c_b(simplex.basics_idx[leaving_variable]) << std::endl;
-    // std::cout << "C: " << simplex.c(simplex.basics_idx[leaving_variable]) << std::endl;
-    // std::cout << "AQ" << std::endl;
-    std::swap(simplex.basics[simplex.basics_idx[leaving_variable]], simplex.non_basics[simplex.non_basics_idx[entering_variable]]);
-    std::swap(simplex.basics_idx[leaving_variable], simplex.basics_idx[entering_variable]);
-    std::swap(simplex.non_basics_idx[leaving_variable], simplex.non_basics_idx[entering_variable]);
-}
-
 //TODO: ajeitar essas duas funcoes
 void solve(const mpsReader& Data)
 {
@@ -73,7 +55,7 @@ void solve(const mpsReader& Data)
         }
         is_basic = get<1>(leave_var_info);
         obj += -t * enter_var.second;
-        std::cout << "OBJ: " << obj << std::endl;
+        // std::cout << "OBJ: " << obj << std::endl;
         solver.update_sol(d, t, enter_var.first);
 
         if(is_basic)
@@ -98,6 +80,10 @@ void solve_first_phase(const mpsReader& Data)
     double t = 0;
     bool is_basic; // 1 sse a variavel que vai sair é basica
     int leave_var = -1;
+    int r = 0;
+    int MAX_ETA_SIZE = 20;
+    
+    //colocando variaveis nao-basicas em algum bound
     for(size_t i = 0; i < solver.non_basics.size(); i++)
     {
         // std::cout << "I: " << i << std::endl;
@@ -120,8 +106,10 @@ void solve_first_phase(const mpsReader& Data)
     }
 
     VectorXd init_x_b = SS.solve_initial(Data.b - Nx_n);
-    std::cout << init_x_b.transpose() << std::endl;
-    obj = solver.check_initial_infeasible(init_x_b, init_x_n);
+    // std::cout << init_x_b.transpose() << std::endl;
+    solver.init_sol(init_x_b, init_x_n);
+    obj = solver.check_infeasible(Data.lb, Data.ub);
+    // obj = solver.check_initial_infeasible(init_x_b, init_x_n);
     
     while(abs(obj) > EPSILON_1)
     {
@@ -138,57 +126,30 @@ void solve_first_phase(const mpsReader& Data)
         std::tuple<int, bool, double> leave_var_info = solver.leaving_variable(d, enter_var);
         t = get<2>(leave_var_info);
         leave_var = get<0>(leave_var_info);
+        // getchar();
+
         if(abs(t) == std::numeric_limits<double>::infinity())
         {
+            std::cout << "T infinito\n";
             break;
         }
         is_basic = get<1>(leave_var_info);
-        // std::cout << "OBJ(1): " << obj << std::endl;
-        obj += -t * enter_var.second;
-        std::cout << "VAR(1): " << solver.x(leave_var) << std::endl;
 
         solver.update_sol(d, t, enter_var.first);
+        obj = solver.check_infeasible(Data.lb, Data.ub);
         std::cout << "OBJ: " << obj << std::endl;
-
-        std::cout << "VAR(2): " << solver.x(leave_var) << std::endl;
 
 
         if(is_basic)
         {
+            r++;
             SS.E.push_back({solver.basics_idx[leave_var], d});
-            update_first_phase(solver, d, enter_var.first, leave_var);
-            std::cout << solver.c(leave_var) << std::endl;
-            std::cout << "TRUE OBJ: " << solver.c.transpose() * solver.x << std::endl; 
-            if(solver.violate_bound[leave_var] == -1)
-            {
-                solver.lb(leave_var) = Data.lb(leave_var);
-                std::cout << "VAR: " << solver.x(leave_var) << std::endl;
-                std::cout << "LB: " << Data.lb(leave_var) << std::endl;
-                std::cout << "OBJ ANTES: " << obj << std::endl;
-                obj -= Data.lb(leave_var);
-                std::cout << "OBJ AGORA: " << obj << std::endl;
-                getchar();
-                // obj -= Data.lb(leave_var);
-                // std::cout << "OBJ agora(1): " << obj << std::endl;
-            }   
-            else if(solver.violate_bound[leave_var] == 1)
-            {
-                solver.ub(leave_var) = Data.ub(leave_var);
-                std::cout << "VAR: " << solver.x(leave_var) << std::endl;
-                std::cout << "UB: " << Data.ub(leave_var) << std::endl;
-                std::cout << "OBJ ANTES: " << obj << std::endl;
-                obj += Data.ub(leave_var);
-                std::cout << "OBJ AGORA: " << obj << std::endl;
-                getchar();
-                // obj += Data.ub(leave_var);
-                // std::cout << "OBJ agora(2): " << obj << std::endl;
+            update_basis_info(solver, d, enter_var.first, leave_var);
+            if(r >= MAX_ETA_SIZE)
+            {   
+                r = 0;
+                SS.refactor(solver.basics, solver.A);
             }
-        }
-        else
-        {
-            std::cout << solver.c(leave_var) << std::endl;
-            std::cout << "TRUE OBJ: " << solver.c.transpose() * solver.x << std::endl; 
-
         }
         // getchar();
 

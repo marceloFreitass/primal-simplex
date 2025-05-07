@@ -26,8 +26,7 @@ class SystemSolver
         //UMFPACK
         double *null;
         void *Symbolic, *Numeric;
-        //TODO: REFATORAR
-
+        void refactor(const std::vector<int>& basics_variables, const Eigen::SparseMatrix<double>& A);
         VectorXd solve_initial(const VectorXd& RHS);
         VectorXd solve_price(const VectorXd& c_b);
         VectorXd solve_direction(const VectorXd& a);

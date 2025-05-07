@@ -38,7 +38,20 @@ class Simplex
 
         std::vector<int> violate_bound; //se v[i] = -1, x_i viola LB, se v[i] = 1 viola UB, 0 viavel
 
-        double check_initial_infeasible(const VectorXd& init_x_b, const VectorXd& init_x_n);
+        inline void init_sol(const VectorXd& init_x_b, const VectorXd& init_x_n)
+        {
+            for(int i = 0; i < m; i++)
+            {
+                x(basics[i]) = init_x_b(i);
+            }
+            for(int i = 0; i < n - m; i++)
+            {
+                x(non_basics[i]) = init_x_n(i);
+            }
+            //FAZENDO COM QUE C_b seja -1 ou 1 e C_n = 0 (inicializado)
+        }
+        double check_infeasible(const VectorXd& lb, const VectorXd& ub);
+        // void check_infeasible(const VectorXd& lb, const VectorXd& ub);
         //variable and reduced cost
         std::pair<int,double> entering_variable(const VectorXd& y);
         //variavel, bool = 1 sse  a variavel que sai estava na base (a variavel nao basica so troca de bound) e valor de t;
