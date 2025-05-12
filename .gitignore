@@ -3,3 +3,4 @@ obj/
 solve
 *.lp
 *.log
+simplex

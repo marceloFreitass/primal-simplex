@@ -4,7 +4,7 @@ EIGENDIR = /opt/eigen-3.40/
 # Compiler flags
 CXXFLAGS = -I ./ -std=c++11 -Wall -I /usr/include/suitesparse -O3 -I $(EIGENDIR)
 LDFLAGS = -lumfpack -lcholmod -lamd -lsuitesparseconfig
-
+#-ffast-math -fno-finite-math-only 
 # Source and object files
 SRC_DIR = src
 OBJ_DIR = obj

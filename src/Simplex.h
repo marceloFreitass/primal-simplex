@@ -7,11 +7,13 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
+#include <iomanip>
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
 
 #define EPSILON_1 0.00001 // 0
+#define epsilon 0 // tava 10^-10
 
 class Simplex
 {
@@ -36,8 +38,17 @@ class Simplex
         int n;
         int m;
 
-        std::vector<int> violate_bound; //se v[i] = -1, x_i viola LB, se v[i] = 1 viola UB, 0 viavel
-
+        inline void init_c(const VectorXd& c_)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                c(i) = c_(i);
+            }
+            for(int i = 0; i < m; i++)
+            {
+                c_b(i) = c_(basics[i]);
+            }
+        }
         inline void init_sol(const VectorXd& init_x_b, const VectorXd& init_x_n)
         {
             for(int i = 0; i < m; i++)
@@ -50,13 +61,12 @@ class Simplex
             }
             //FAZENDO COM QUE C_b seja -1 ou 1 e C_n = 0 (inicializado)
         }
-        double check_infeasible(const VectorXd& lb, const VectorXd& ub);
-        // void check_infeasible(const VectorXd& lb, const VectorXd& ub);
+        int check_infeasible(const VectorXd& lb, const VectorXd& ub);
         //variable and reduced cost
         std::pair<int,double> entering_variable(const VectorXd& y);
         //variavel, bool = 1 sse  a variavel que sai estava na base (a variavel nao basica so troca de bound) e valor de t;
         std::tuple<int, bool, double> leaving_variable(const VectorXd& d, const std::pair<int,double>& entering_variable);
-        inline void update_sol(const VectorXd& d, const double t, const int non_basic_variable)
+        inline void update_sol(const VectorXd& d, const double& t, const int& non_basic_variable)
         {
             for(int i = 0; i < m; i++)
             {

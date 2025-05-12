@@ -1,5 +1,5 @@
-#ifndef SS_h
-#define SS_h
+#ifndef SYSTEMSOLVER_H
+#define SYSTEMSOLVER_H
 
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Sparse>
@@ -8,8 +8,6 @@
 #include <vector>
 #include <umfpack.h>
 
-
-#include "aux.h"
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
